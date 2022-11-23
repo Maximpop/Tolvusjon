@@ -2,21 +2,19 @@ import cv2
 import time
 import numpy as np
 
-#def tup(x):
-#    return tuple((int(x[1]), int(x[0])))
-
 Reddest = False
 brightest_spot = "opencv" #"loops" for two for loops
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0) #just change to (1) with ivcam for phone camera
 retur = True
 
 while True:
+    ti = time.monotonic() # time for frame rate
     retur, frame = cap.read()
     if not retur:
         print("Camera not loaded")
         break # turns of the software
-    ti = time.monotonic() # time for frame rate
+    
 
     if brightest_spot:
         gray = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
@@ -35,18 +33,29 @@ while True:
         cv2.circle(frame, maxIndex, 15, (208, 224, 64), 4)
 
     if Reddest:
-        lower_red = np.array([0, 0, 200], dtype = "uint8") 
+       hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV) #Look into this approach
+       maxValRed = 0
+       maxRedIND = (0,0) #pixel location
+       for x in range(frame.shape[0]): #Max value search with x and y cordinates
+            for y in range(frame.shape[1]):
+                if frame[x, y,2] > maxValRed and frame[x, y,1] < 160 and frame[x, y,0] < 160 and abs(frame[x, y,1] - frame[x, y,0]) <15:
+                    maxRedIND = (x,y)
+                    maxValRed = frame[x,y,2]
 
-        upper_red= np.array([0, 0, 255], dtype = "uint8")
-        mask = cv2.inRange(frame, lower_red, upper_red)
+       maxRedIND = tuple((int(maxRedIND[1]), int(maxRedIND[0])))                
+
+       cv2.circle(frame, maxRedIND, 15, (255, 0, 64), 4)
+
 
     t = time.monotonic()
-    cv2.putText(frame, f"{1/(t-ti+0.00001):.1f} FPS", (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 204, 255))
-
+    cv2.putText(frame, f"{1/(t-ti+0.00001):.1f} FPS", (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255))
+    #print(f"{t-ti:.1f} FPS")
+    #print(f"{ti:.1f} FPS")
+    
     cv2.imshow("Assigment1", frame)
 
-    k = cv2.waitKey(100) & 0xFF
-    if k == ord('c'):
+    k = cv2.waitKey(10) & 0xFF
+    if k == 27:
         break
     if k == ord('l'):
         brightest_spot = "loops"
