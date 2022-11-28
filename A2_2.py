@@ -39,7 +39,6 @@ while True:
             cv2.line(countourArr, pt1, pt2, 0, 3, cv2.LINE_AA)
     
     linesP = cv2.HoughLinesP(canny, 1, np.pi / 180, 50, None, 50, 10)
-    
     if linesP is not None:
         for i in range(0, len(linesP)):
             l = linesP[i][0]
@@ -62,7 +61,7 @@ while True:
         [640, 480],
         [640, 0],], np.float32)
 
-    if len(cornersOld) == 4:
+    if len(cornersOld) == 4: #if four corners
 
         getPer = cv2.getPerspectiveTransform(cornersOld, cornersNew)
         Warped = cv2.warpPerspective(frame, getPer, (640, 480))
