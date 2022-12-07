@@ -38,7 +38,7 @@ Reddest = False
 brightest_spot = "opencv" #"loops" for two for loops
 
 t_lower = 50  # Lower Threshold
-t_upper = 200  # Upper threshold
+t_upper = 150  # Upper threshold
 
 cap = cv2.VideoCapture(0)
 retur = True
@@ -81,8 +81,8 @@ while True:
     line , inliner = ransac(cor,5)
     xcor = 1000*line[0]+line[1]
     xcor = int(xcor)
-    cv2.line(frame,(int(line[1]),0),(xcor,1000),(255,255,255),2)
-    cv2.imshow("Assigment2", frame)
+    cv2.line(frameCan,(int(line[1]),0),(xcor,1000),(255,255,255),2)
+    cv2.imshow("Assigment2", frameCan)
     
     
     

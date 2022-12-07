@@ -3,11 +3,11 @@ import time
 import numpy as np
 
 Reddest = False
-brightest_spot = "opencv" #"loops" for two for loops
+brightest_spot = False #"loops" for two for loops
 
 cap = cv2.VideoCapture(0) #just change to (1) with ivcam for phone camera
 retur = True
-
+cap = cv2.VideoCapture("rtsp://admin:12345@192.0.0.64:554")
 while True:
     ti = time.monotonic() # time for frame rate
     retur, frame = cap.read()

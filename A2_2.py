@@ -38,11 +38,11 @@ while True:
             cv2.line(cannyColor, pt1, pt2, (0, 0, 255), 3, cv2.LINE_AA)
             cv2.line(countourArr, pt1, pt2, 0, 3, cv2.LINE_AA)
     
-    linesP = cv2.HoughLinesP(canny, 1, np.pi / 180, 50, None, 50, 10)
-    if linesP is not None:
-        for i in range(0, len(linesP)):
-            l = linesP[i][0]
-            cv2.line(cannyColorCopy, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
+    #linesP = cv2.HoughLinesP(canny, 1, np.pi / 180, 50, None, 50, 10)
+    #if linesP is not None:
+        #for i in range(0, len(linesP)):
+            #l = linesP[i][0]
+            #cv2.line(cannyColorCopy, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
     
 
     contours, q= cv2.findContours(countourArr, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
