@@ -75,14 +75,18 @@ cv2.imshow("Assigment2", frame)
 cv2.line(frame,(int(line[1]),0),(xcor,1000),(255,255,255),2)
 #cv2.line(frameCan,(a[1],a[0]),(b[1],b[0]),(255,255,255),2)
 while True:
+    ti = time.monotonic() # time for frame rate
     retur, frame = cap.read()
     frameCan = cv2.Canny(frame,t_lower,t_upper)
     cor = np.argwhere(frameCan)
     line , inliner = ransac(cor,5)
     xcor = 1000*line[0]+line[1]
     xcor = int(xcor)
-    cv2.line(frameCan,(int(line[1]),0),(xcor,1000),(255,255,255),2)
-    cv2.imshow("Assigment2", frameCan)
+    cv2.line(frame,(int(line[1]),0),(xcor,1000),(255,255,255),2)
+    t = time.monotonic()
+    cv2.putText(frame, f"{1/(t-ti+0.00001):.1f} FPS", (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255))
+    cv2.imshow("Assigment2", frame)
+    
     
     
     

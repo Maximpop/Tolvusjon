@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from cocoNames import cocoNames
+import time
 
 cap = cv2.VideoCapture(0)
 whT = 320
@@ -8,6 +9,8 @@ confThress = 0.5
 nmsThress = 0.3
 modelConfiguration = "yolov3.cfg"
 modelWeights = "yolov3.weights"
+#modelConfiguration = "yolov3-tiny.cfg"
+#modelWeights = "yolov3-tiny.weights"
 
 net = cv2.dnn.readNetFromDarknet(modelConfiguration,modelWeights)
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
@@ -41,6 +44,7 @@ def findObject(outputs,img):
 
 
 while True:
+    ti = time.monotonic() # time for frame rate
     success, img = cap.read()
     blob = cv2.dnn.blobFromImage(img,1/255,(whT,whT),[0,0,0],1,crop=False)
     net.setInput(blob)
@@ -57,6 +61,8 @@ while True:
     #print(outputs[0][0])
     #print(findObject(outputs,img))
     findObject(outputs,img)
+    t = time.monotonic()
+    cv2.putText(img, f"{1/(t-ti+0.00001):.1f} FPS", (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255))
     cv2.imshow("image",img)
 
 
